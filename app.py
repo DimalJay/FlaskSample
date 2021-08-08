@@ -14,7 +14,7 @@ def findlinks(data):
 @app.route('/')
 def index():
     """Return homepage."""
-    data = requests.get("https://ilabacademy.blogspot.com/").text
+    data = ""
     return data
 
 @app.route('/deadlink',methods = ['POST', "GET"])
