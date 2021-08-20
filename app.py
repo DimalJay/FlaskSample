@@ -18,7 +18,7 @@ def bot():
         # Youtube
         print(incoming_msg)
         yt = pytube.YouTube(incoming_msg)
-        video= yt.streams[0]
+        video= yt.streams.get_highest_resolution()
         msg.body(video.url)
         
         responded = True
