@@ -8,6 +8,9 @@ gunicorn = "*"
 flask = "*"
 regex = "*"
 requests = "*"
+twilio = "*"
+pytube = "*"
+urllib = "*"
 
 [dev-packages]
 
