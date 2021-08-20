@@ -10,7 +10,6 @@ regex = "*"
 requests = "*"
 twilio = "*"
 pytube = "*"
-urllib = "*"
 
 [dev-packages]
 
