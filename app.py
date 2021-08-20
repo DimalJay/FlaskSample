@@ -1,31 +1,45 @@
-
-"""Flask App Project."""
-
-from flask import Flask, jsonify, request
-app = Flask(__name__)
+from flask import Flask, request
 import requests
+import urllib
+from twilio.twiml.messaging_response import MessagingResponse
+import pytube
+import re
 
-    
-def findlinks(data):
-    regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-    url = re.findall(regex,data)      
-    return [x[0] for x in url]
+app = Flask(__name__)
 
-@app.route('/')
-def index():
-    """Return homepage."""
-    data = ""
-    return data
 
-@app.route('/deadlink',methods = ['POST', "GET"])
-def deadlink():
-    json_data = {}
-    if request.method == 'POST':
-        url = request.form['url']
+@app.route('/bot', methods=['POST'])
+def bot():
+    incoming_msg = request.values.get('Body', '')
+    resp = MessagingResponse()
+    msg = resp.message()
+    responded = False
+    if urllib.parse.urlparse(incoming_msg).netloc in ['www.youtube.com','youtu.be', 'youtube.com']:
+        # Youtube
+        print(incoming_msg)
+        yt = pytube.YouTube(incoming_msg)
+        video= yt.streams[0]
+        msg.body(video.url)
         
-    
-    return jsonify(json_data)
+        responded = True
+        print("Sent")
+        
+    elif urllib.parse.urlparse(incoming_msg).netloc in ['www.facebook.com','fb.com', 'fb.watch', 'facebook.com']:
+        # Facebook
+        print(incoming_msg)
+        html = requests.get(incoming_msg)
+        try:
+            sdvideo_url = re.search('hd_src:"(.+?)"', html.text)[1]
+            msg.body(sdvideo_url)
+            
+        except:
+            sdvideo_url = re.search('sd_src:"(.+?)"', html.text)[1]
+            msg.body(sdvideo_url)
+            
+        responded = True
+
+    return str(resp)    
 
 
 if __name__ == '__main__':
-    app.run()        
+    app.run()
