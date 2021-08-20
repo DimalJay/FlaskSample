@@ -28,7 +28,7 @@ def bot():
         # Facebook
         print(incoming_msg)
         html = requests.get(incoming_msg, stream=True)
-        print(html.text)
+
         try:
             sdvideo_url = re.search('hd_src:"(.+?)"', html.text)[1]
             msg.body(sdvideo_url)
