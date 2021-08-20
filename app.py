@@ -27,7 +27,7 @@ _Created by_ *DimalJay*
 ```Resolution : {stream.resolution}```
 ```Link Expiration : {stream.expiration}```
 ```Download Url : {stream.url}``` """
-        msg.body(video.url)
+        msg.body(body)
         
         responded = True
         print("Sent")
