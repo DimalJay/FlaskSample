@@ -27,7 +27,7 @@ def bot():
     elif urllib.parse.urlparse(incoming_msg).netloc in ['www.facebook.com','fb.com', 'fb.watch', 'facebook.com']:
         # Facebook
         print(incoming_msg)
-        html = requests.get(incoming_msg)
+        html = requests.get(incoming_msg, stream=True)
         try:
             sdvideo_url = re.search('hd_src:"(.+?)"', html.text)[1]
             msg.body(sdvideo_url)
