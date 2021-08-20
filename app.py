@@ -18,7 +18,15 @@ def bot():
         # Youtube
         print(incoming_msg)
         yt = pytube.YouTube(incoming_msg)
-        video= yt.streams.get_highest_resolution()
+        stream= yt.streams.get_highest_resolution()
+        body =f"""*WATY Video Downloader v1.2*
+_Created by_ *DimalJay*
+
+```File name : {stream.default_filename}```
+```File Size : {round(stream.filesize/1024**2,2)} Mb ```
+```Resolution : {stream.resolution}```
+```Link Expiration : {stream.expiration}```
+```Download Url : {stream.url}``` """
         msg.body(video.url)
         
         responded = True
